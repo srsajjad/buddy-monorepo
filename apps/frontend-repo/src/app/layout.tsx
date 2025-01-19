@@ -1,13 +1,17 @@
-import "./styles.css";
+import { type ReactNode } from "react";
+import { Providers } from "./providers";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}): JSX.Element {
+export const metadata = {
+  title: "Frontend App",
+  description: "Frontend application with Firebase auth and MUI",
+};
+
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
