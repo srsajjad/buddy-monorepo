@@ -12,13 +12,14 @@ import {
   CircularProgress,
   Link,
 } from "@mui/material";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../config/firebase";
 
-export default function LoginForm() {
+export default function SignUpForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -28,11 +29,16 @@ export default function LoginForm() {
     setError("");
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      await updateProfile(user, { displayName });
       router.push("/dashboard");
     } catch (err) {
-      setError("Failed to sign in. Please check your credentials.");
-      console.error("Login error:", err);
+      setError("Failed to create account. Please try again.");
+      console.error("Signup error:", err);
     } finally {
       setLoading(false);
     }
@@ -59,9 +65,21 @@ export default function LoginForm() {
           }}
         >
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign Up
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="displayName"
+              label="Display Name"
+              name="displayName"
+              autoComplete="name"
+              autoFocus
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+            />
             <TextField
               margin="normal"
               required
@@ -70,7 +88,6 @@ export default function LoginForm() {
               label="Email Address"
               name="email"
               autoComplete="email"
-              autoFocus
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               error={!!error}
@@ -83,7 +100,7 @@ export default function LoginForm() {
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
+              autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               error={!!error}
@@ -100,11 +117,11 @@ export default function LoginForm() {
               sx={{ mt: 3, mb: 2 }}
               disabled={loading}
             >
-              {loading ? <CircularProgress size={24} /> : "Sign In"}
+              {loading ? <CircularProgress size={24} /> : "Sign Up"}
             </Button>
             <Box sx={{ textAlign: "center" }}>
-              <Link href="/signup" variant="body2">
-                Don't have an account? Sign up
+              <Link href="/" variant="body2">
+                Already have an account? Sign in
               </Link>
             </Box>
           </Box>
