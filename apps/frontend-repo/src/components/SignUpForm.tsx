@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../config/firebase";
+import { userApi } from "../apis/userApi";
+import type { User } from "../types/user";
 
 export default function SignUpForm() {
   const router = useRouter();
@@ -29,12 +31,30 @@ export default function SignUpForm() {
     setError("");
 
     try {
+      // Create Firebase auth user
       const { user } = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
+
+      // Update user profile with display name
       await updateProfile(user, { displayName });
+
+      // Get the ID token for API authentication
+      const token = await user.getIdToken();
+      localStorage.setItem("authToken", token);
+
+      // Save user data to our backend/Firestore
+      const userData: Partial<User> = {
+        uid: user.uid,
+        email: user.email!,
+        displayName,
+        photoURL: user.photoURL || "",
+        isActive: true,
+      };
+
+      await userApi.createUser(userData);
       router.push("/dashboard");
     } catch (err) {
       setError("Failed to create account. Please try again.");

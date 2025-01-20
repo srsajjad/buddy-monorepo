@@ -24,12 +24,12 @@ class UserRepository {
     const user: User = {
       uid: userData.uid!,
       email: userData.email!,
-      displayName: userData.displayName,
-      photoURL: userData.photoURL,
+      displayName: userData.displayName || "",
+      photoURL: userData.photoURL || "",
       createdAt: now,
       updatedAt: now,
-      isActive: true,
-      metadata: userData.metadata,
+      isActive: userData.isActive ?? true,
+      ...(userData.metadata && { metadata: userData.metadata }),
     };
 
     await this.collection.doc(user.uid).set(user);

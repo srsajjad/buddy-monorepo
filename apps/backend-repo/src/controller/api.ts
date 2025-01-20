@@ -1,41 +1,57 @@
 import { type Request, type Response } from "express";
-import { UserRepository } from "../repository/userCollection";
-import type { User } from "../entities/user";
+import { userCollection } from "../repository/userCollection";
 
 export const UserController = {
+  async createUser(req: Request, res: Response) {
+    try {
+      const userData = {
+        ...req.body,
+        uid: req.user?.uid,
+        email: req.user?.email,
+      };
+      const user = await userCollection.createUser(userData);
+      res.status(201).json(user);
+    } catch (error) {
+      console.error("Create user error:", error);
+      res.status(500).json({ error: "Failed to create user" });
+    }
+  },
+
   async updateUserData(req: Request, res: Response) {
     try {
-      const userId = req.user?.uid;
-      if (!userId) {
-        return res.status(401).json({ error: "User not authenticated" });
+      const uid = req.user?.uid;
+      if (!uid) {
+        return res.status(401).json({ error: "Unauthorized" });
       }
 
-      const userData: Partial<User> = req.body;
-      await UserRepository.updateUser(userId, userData);
+      const updatedUser = await userCollection.updateUser(uid, req.body);
+      if (!updatedUser) {
+        return res.status(404).json({ error: "User not found" });
+      }
 
-      return res.status(200).json({ message: "User updated successfully" });
+      res.json(updatedUser);
     } catch (error) {
-      console.error("Update User Error:", error);
-      return res.status(500).json({ error: "Failed to update user" });
+      console.error("Update user error:", error);
+      res.status(500).json({ error: "Failed to update user data" });
     }
   },
 
   async fetchUserData(req: Request, res: Response) {
     try {
-      const userId = req.user?.uid;
-      if (!userId) {
-        return res.status(401).json({ error: "User not authenticated" });
+      const uid = req.user?.uid;
+      if (!uid) {
+        return res.status(401).json({ error: "Unauthorized" });
       }
 
-      const user = await UserRepository.getUserById(userId);
+      const user = await userCollection.getUser(uid);
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
 
-      return res.status(200).json(user);
+      res.json(user);
     } catch (error) {
-      console.error("Fetch User Error:", error);
-      return res.status(500).json({ error: "Failed to fetch user" });
+      console.error("Fetch user error:", error);
+      res.status(500).json({ error: "Failed to fetch user data" });
     }
   },
 };

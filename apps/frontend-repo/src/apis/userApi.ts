@@ -21,6 +21,10 @@ api.interceptors.request.use((config) => {
 });
 
 export const userApi = {
+  async createUser(userData: Partial<User>) {
+    return api.post<User>("/users/create-user", userData);
+  },
+
   async fetchUserData() {
     return api.get<User>("/users/fetch-user-data");
   },
