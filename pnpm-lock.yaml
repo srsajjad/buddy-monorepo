@@ -20,6 +20,12 @@ importers:
       '@repo/logger':
         specifier: workspace:*
         version: link:../../packages/logger
+      '@repo/shared-types':
+        specifier: workspace:*
+        version: link:../../packages/shared-types
+      '@repo/shared-utils':
+        specifier: workspace:*
+        version: link:../../packages/shared-utils
       body-parser:
         specifier: ^1.20.2
         version: 1.20.3
@@ -105,6 +111,12 @@ importers:
       '@repo/logger':
         specifier: workspace:*
         version: link:../../packages/logger
+      '@repo/shared-types':
+        specifier: workspace:*
+        version: link:../../packages/shared-types
+      '@repo/shared-utils':
+        specifier: workspace:*
+        version: link:../../packages/shared-utils
       '@repo/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -207,6 +219,46 @@ importers:
         version: 8.2.4(typescript@5.5.4)
       typescript:
         specifier: 5.5.4
+        version: 5.5.4
+
+  packages/shared-types:
+    devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../config-eslint
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../config-typescript
+      eslint:
+        specifier: ^8.0.0
+        version: 8.57.1
+      tsup:
+        specifier: ^8.0.0
+        version: 8.2.4(typescript@5.5.4)
+      typescript:
+        specifier: ^5.0.0
+        version: 5.5.4
+
+  packages/shared-utils:
+    dependencies:
+      '@repo/shared-types':
+        specifier: workspace:*
+        version: link:../shared-types
+    devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../config-eslint
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../config-typescript
+      eslint:
+        specifier: ^8.0.0
+        version: 8.57.1
+      tsup:
+        specifier: ^8.0.0
+        version: 8.2.4(typescript@5.5.4)
+      typescript:
+        specifier: ^5.0.0
         version: 5.5.4
 
   packages/ui:

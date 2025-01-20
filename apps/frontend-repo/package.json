@@ -11,6 +11,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@repo/shared-types": "workspace:*",
+    "@repo/shared-utils": "workspace:*",
     "@repo/logger": "workspace:*",
     "@repo/ui": "workspace:*",
     "@emotion/react": "^11.11.4",
