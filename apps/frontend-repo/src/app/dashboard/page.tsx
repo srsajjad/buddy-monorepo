@@ -1,5 +1,5 @@
 import { Container, Typography } from "@mui/material";
-import UpdateButton from "../../components/UpdateButton";
+import FetchDataButton from "../../components/FetchDataButton";
 import Navbar from "../../components/Navbar";
 
 export default function Dashboard() {
@@ -10,7 +10,7 @@ export default function Dashboard() {
         <Typography variant="h4" component="h1" align="center" sx={{ my: 4 }}>
           Dashboard
         </Typography>
-        <UpdateButton />
+        <FetchDataButton />
       </Container>
     </>
   );
