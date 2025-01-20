@@ -8,4 +8,4 @@ const router = Router();
 router.put("/update-user-data", authMiddleware, UserController.updateUserData);
 router.get("/fetch-user-data", authMiddleware, UserController.fetchUserData);
 
-export default router;
+export const userRoutes: Router = router;

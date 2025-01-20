@@ -2,13 +2,10 @@ import express from "express";
 import cors from "cors";
 import { json, urlencoded } from "body-parser";
 import morgan from "morgan";
-import { initializeFirebase } from "../config/firebaseConfig";
-import userRoutes from "../routes/userRoutes";
+import { userRoutes } from "../routes/userRoutes";
+import "../config/firebase"; // This will initialize Firebase
 
 export const createApp = () => {
-  // Initialize Firebase
-  initializeFirebase();
-
   const app = express();
 
   // Middleware
@@ -23,8 +20,8 @@ export const createApp = () => {
   app.use("/api/users", userRoutes);
 
   // Health check
-  app.get("/status", (_, res) => {
-    return res.json({ ok: true });
+  app.get("/health", (_, res) => {
+    res.json({ status: "ok" });
   });
 
   return app;

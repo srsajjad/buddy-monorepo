@@ -1,6 +1,5 @@
 import { type Request, type Response, type NextFunction } from "express";
-import { getAuth } from "firebase-admin/auth";
-import { getFirebaseApp } from "../config/firebaseConfig";
+import { auth } from "../config/firebase";
 
 export const authMiddleware = async (
   req: Request,
@@ -10,21 +9,21 @@ export const authMiddleware = async (
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader?.startsWith("Bearer ")) {
-      return res.status(401).json({ error: "No token provided" });
+      return res.status(401).json({ error: "Unauthorized" });
     }
 
     const token = authHeader.split("Bearer ")[1];
-    const decodedToken = await getAuth(getFirebaseApp()).verifyIdToken(token);
+    const decodedToken = await auth.verifyIdToken(token);
 
-    // Add user info to request
+    // Add user to request
     req.user = {
       uid: decodedToken.uid,
-      email: decodedToken.email,
+      email: decodedToken.email || null,
     };
 
     next();
   } catch (error) {
-    console.error("Auth Middleware Error:", error);
-    return res.status(401).json({ error: "Invalid token" });
+    console.error("Auth error:", error);
+    res.status(401).json({ error: "Unauthorized" });
   }
 };
