@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "buildCommand": "turbo run build",
+  "installCommand": "pnpm install",
+  "outputDirectory": "apps/frontend-repo/.next",
+  "builds": [
+    {
+      "src": "apps/backend-repo/src/index.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "apps/frontend-repo/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "apps/backend-repo/src/index.ts"
+    },
+    {
+      "source": "/:path*",
+      "destination": "apps/frontend-repo"
+    }
+  ]
+}
