@@ -1,38 +1,138 @@
-# Turborepo kitchen sink starter
+# Buddy Monorepo
 
-This Turborepo starter is maintained by the Turborepo core team.
+A full-stack TypeScript monorepo using Next.js, Express, and Firebase.
 
-This example also shows how to use [Workspace Configurations](https://turbo.build/repo/docs/core-concepts/monorepos/configuring-workspaces).
+## Project Structure
 
-## Using this example
-
-Run the following command:
-
-```sh
-npx create-turbo@latest -e kitchen-sink
+```
+buddy-monorepo/
+├── apps/
+│   ├── backend-repo/     # Express.js + Firebase backend
+│   └── frontend-repo/    # Next.js frontend
+└── packages/
+    ├── shared-types/     # Shared TypeScript interfaces
+    ├── shared-utils/     # Shared utility functions
+    └── logger/           # Shared logging functionality
 ```
 
-## What's inside?
+## Features
 
-This Turborepo includes the following packages and apps:
+- **Frontend (Next.js 14+)**
 
-### Apps and Packages
+  - React MUI components
+  - Redux state management
+  - Firebase Authentication
+  - Mobile responsive design
+  - App Router implementation
 
-- `backend-repo`: an [Express](https://expressjs.com/) server
-- `frontend-repo`: a [Next.js](https://nextjs.org/) app
-- `@repo/eslint-config`: ESLint configurations used throughout the monorepo
-- `@repo/jest-presets`: Jest configurations
-- `@repo/logger`: isomorphic logger (a small wrapper around console.log)
-- `@repo/ui`: a dummy React UI library (which contains `<CounterButton>` and `<Link>` components)
-- `@repo/typescript-config`: tsconfig.json's used throughout the monorepo
+- **Backend (Express.js)**
+  - Firebase Admin SDK integration
+  - User management endpoints
+  - JWT authentication middleware
+  - Firestore database integration
 
-Each package and app is 100% [TypeScript](https://www.typescriptlang.org/).
+## Getting Started
 
-### Utilities
+### Prerequisites
 
-This Turborepo has some additional tools already setup for you:
+- Node.js 18+
+- pnpm
+- Firebase project credentials
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Jest](https://jestjs.io) test runner for all things JavaScript
-- [Prettier](https://prettier.io) for code formatting
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone [repository-url]
+cd buddy-monorepo
+```
+
+2. Install dependencies:
+
+```bash
+pnpm install
+```
+
+3. Set up environment variables:
+
+```bash
+# In apps/backend-repo/.env
+FIREBASE_DATABASE_URL=your-database-url
+# Add other Firebase config variables
+
+# In apps/frontend-repo/.env
+NEXT_PUBLIC_API_URL=http://localhost:5001/api
+# Add other frontend config variables
+```
+
+4. Start development servers:
+
+```bash
+# Start all services
+pnpm dev
+
+# Start individual services
+pnpm --filter backend-repo dev
+pnpm --filter frontend-repo dev
+```
+
+### Local Development with Firebase Emulator
+
+1. Install Firebase CLI:
+
+```bash
+npm install -g firebase-tools
+```
+
+2. Start Firebase emulators:
+
+```bash
+cd apps/backend-repo
+firebase emulators:start --only functions
+```
+
+## Available Scripts
+
+- `pnpm dev` - Start development servers
+- `pnpm build` - Build all packages and apps
+- `pnpm lint` - Run ESLint
+- `pnpm typecheck` - Run TypeScript type checking
+- `pnpm test` - Run tests
+
+## API Endpoints
+
+### User Management
+
+- `POST /api/users/create-user` - Create new user
+- `PUT /api/users/update-user-data` - Update user data
+- `GET /api/users/fetch-user-data` - Fetch user data
+
+All endpoints require Firebase authentication token.
+
+## Tech Stack
+
+- **Frontend**
+
+  - Next.js 14+
+  - React MUI
+  - Redux Toolkit
+  - TypeScript
+  - Firebase Auth
+
+- **Backend**
+
+  - Express.js
+  - Firebase Admin SDK
+  - TypeScript
+  - Firestore
+
+- **Development**
+  - pnpm (Package Manager)
+  - ESLint
+  - TypeScript
+  - Turborepo
+
+## License
+
+MIT
