@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { userApi } from "../../apis/userApi";
-import { User, UserUpdatePayload, ApiResponse } from "@repo/shared-types";
+import type { User, UserUpdatePayload, ApiResponse } from "@repo/shared-types";
 
 interface UserState {
   user: User | null;
@@ -16,44 +16,37 @@ const initialState: UserState = {
   isAuthenticated: false,
 };
 
-export const fetchUserData = createAsyncThunk<ApiResponse<User>>(
-  "user/fetchUserData",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await userApi.fetchUserData();
-      return response;
-    } catch (error) {
-      if (
-        error instanceof Error &&
-        error.message === "User not authenticated"
-      ) {
-        return rejectWithValue("Authentication required");
-      }
-      return rejectWithValue("Failed to fetch user data");
+export const fetchUserData = createAsyncThunk<
+  ApiResponse<User>,
+  void,
+  { rejectValue: string }
+>("user/fetchUserData", async (_, { rejectWithValue }) => {
+  try {
+    const response = await userApi.fetchUserData();
+    return response;
+  } catch (error) {
+    if (error instanceof Error && error.message === "User not authenticated") {
+      return rejectWithValue("Authentication required");
     }
+    return rejectWithValue("Failed to fetch user data");
   }
-);
+});
 
 export const updateUserData = createAsyncThunk<
   ApiResponse<User>,
-  UserUpdatePayload
->(
-  "user/updateUserData",
-  async (userData: UserUpdatePayload, { rejectWithValue }) => {
-    try {
-      const response = await userApi.updateUserData(userData);
-      return response;
-    } catch (error) {
-      if (
-        error instanceof Error &&
-        error.message === "User not authenticated"
-      ) {
-        return rejectWithValue("Authentication required");
-      }
-      return rejectWithValue("Failed to update user data");
+  UserUpdatePayload,
+  { rejectValue: string }
+>("user/updateUserData", async (userData, { rejectWithValue }) => {
+  try {
+    const response = await userApi.updateUserData(userData);
+    return response;
+  } catch (error) {
+    if (error instanceof Error && error.message === "User not authenticated") {
+      return rejectWithValue("Authentication required");
     }
+    return rejectWithValue("Failed to update user data");
   }
-);
+});
 
 const userSlice = createSlice({
   name: "user",
@@ -62,7 +55,7 @@ const userSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
-    setAuthenticated: (state, action) => {
+    setAuthenticated: (state, action: { payload: boolean }) => {
       state.isAuthenticated = action.payload;
       if (!action.payload) {
         state.user = null;
@@ -82,7 +75,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserData.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.error = action.payload ?? "An error occurred";
         if (action.payload === "Authentication required") {
           state.isAuthenticated = false;
           state.user = null;
@@ -99,7 +92,7 @@ const userSlice = createSlice({
       })
       .addCase(updateUserData.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.error = action.payload ?? "An error occurred";
         if (action.payload === "Authentication required") {
           state.isAuthenticated = false;
           state.user = null;
