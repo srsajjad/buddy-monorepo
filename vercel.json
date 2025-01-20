@@ -1,15 +1,14 @@
 {
   "version": 2,
-  "buildCommand": "turbo run build",
+  "buildCommand": false,
   "installCommand": "pnpm install",
-  "outputDirectory": "apps/frontend-repo/.next",
   "builds": [
     {
       "src": "apps/backend-repo/src/index.ts",
       "use": "@vercel/node"
     },
     {
-      "src": "apps/frontend-repo/package.json",
+      "src": "apps/frontend-repo",
       "use": "@vercel/next"
     }
   ],
