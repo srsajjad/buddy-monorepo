@@ -23,7 +23,6 @@ class UserRepository {
       ...(userData.metadata && { metadata: userData.metadata }),
     };
 
-    console.log("Creating user with data:", user);
     if (!isValidUser(user)) {
       throw new Error("Invalid user data");
     }
@@ -37,16 +36,6 @@ class UserRepository {
     if (!doc.exists) return null;
 
     const userData = doc.data() as User;
-    console.log("Raw Firestore data:", userData);
-    console.log("isValidUser check:", {
-      hasUid: !!userData.uid,
-      hasEmail: !!userData.email,
-      hasDisplayName: !!userData.displayName,
-      hasCreatedAt: !!userData.createdAt,
-      hasUpdatedAt: !!userData.updatedAt,
-      isActiveType: typeof userData.isActive,
-    });
-
     if (!isValidUser(userData)) {
       throw new Error("Invalid user data in database");
     }
