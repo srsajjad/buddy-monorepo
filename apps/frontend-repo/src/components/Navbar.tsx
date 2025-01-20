@@ -11,7 +11,6 @@ export default function Navbar() {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      localStorage.removeItem("authToken"); // Clear the auth token
       router.push("/"); // Redirect to login page
     } catch (error) {
       console.error("Logout error:", error);

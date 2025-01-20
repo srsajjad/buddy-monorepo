@@ -1,5 +1,6 @@
 import axios from "axios";
 import type { User } from "../types/user";
+import { auth } from "../config/firebase";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
@@ -12,9 +13,10 @@ const api = axios.create({
 });
 
 // Add auth token to requests
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("authToken");
-  if (token) {
+api.interceptors.request.use(async (config) => {
+  const user = auth.currentUser;
+  if (user) {
+    const token = await user.getIdToken();
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;

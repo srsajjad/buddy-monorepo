@@ -41,10 +41,6 @@ export default function SignUpForm() {
       // Update user profile with display name
       await updateProfile(user, { displayName });
 
-      // Get the ID token for API authentication
-      const token = await user.getIdToken();
-      localStorage.setItem("authToken", token);
-
       // Save user data to our backend/Firestore
       const userData: Partial<User> = {
         uid: user.uid,
