@@ -1,5 +1,3 @@
-import { createApp } from "../src/core/app";
-
-const app = createApp();
+import app from "../dist";
 
 export default app;
