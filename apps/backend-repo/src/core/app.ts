@@ -12,7 +12,12 @@ export const createApp = () => {
   app
     .disable("x-powered-by")
     .use(morgan("dev"))
-    .use(cors({ origin: true, credentials: true }))
+    .use(
+      cors({
+        origin: process.env.FRONTEND_URL || "http://localhost:3002",
+        credentials: true,
+      })
+    )
     .use(json())
     .use(urlencoded({ extended: true }));
 
