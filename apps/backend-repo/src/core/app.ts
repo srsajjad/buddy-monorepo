@@ -8,30 +8,11 @@ import "../config/firebase"; // This will initialize Firebase
 export const createApp = () => {
   const app = express();
 
-  // CORS configuration
-  const corsOptions = {
-    origin: [
-      process.env.FRONTEND_URL,
-      "http://localhost:3002",
-      "https://buddy-monorepo-frontend-repo.vercel.app",
-    ],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "X-Requested-With",
-      "Accept",
-      "Origin",
-    ],
-    exposedHeaders: ["set-cookie"],
-  };
-
   // Middleware
   app
     .disable("x-powered-by")
     .use(morgan("dev"))
-    .use(cors(corsOptions))
+    .use(cors({ origin: true, credentials: true }))
     .use(json())
     .use(urlencoded({ extended: true }));
 
