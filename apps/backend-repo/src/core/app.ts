@@ -10,7 +10,11 @@ export const createApp = () => {
 
   // CORS configuration
   const corsOptions = {
-    origin: process.env.FRONTEND_URL || "http://localhost:3002",
+    origin: [
+      process.env.FRONTEND_URL,
+      "http://localhost:3002",
+      "https://buddy-monorepo-frontend-repo.vercel.app",
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: [
