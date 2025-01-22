@@ -2,10 +2,10 @@ import express from "express";
 import cors from "cors";
 import { json, urlencoded } from "body-parser";
 import morgan from "morgan";
-import { userRoutes } from "../routes/userRoutes";
-import "../config/firebase"; // This will initialize Firebase
+import { userRoutes } from "@/routes/userRoutes";
+import "@/config/firebase"; // This will initialize Firebase
 
-export const createApp = () => {
+export const createApp = (): express.Application => {
   const app = express();
 
   // Middleware

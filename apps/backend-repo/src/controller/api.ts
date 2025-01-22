@@ -5,13 +5,14 @@ import {
   validateEmail,
   validateDisplayName,
 } from "@repo/shared-utils";
-import { userCollection } from "../repository/userCollection";
+import { log } from "@repo/logger";
+import { userCollection } from "@/repository/userCollection";
 
 export const UserController = {
-  async createUser(
+  createUser: async (
     req: Request<Record<string, never>, unknown, Partial<User>>,
     res: Response
-  ) {
+  ) => {
     try {
       if (!req.user?.uid || !req.user.email) {
         const error: ApiError = createErrorMessage(
@@ -46,7 +47,7 @@ export const UserController = {
       const user = await userCollection.createUser(userData);
       res.status(201).json({ data: user, status: 201 });
     } catch (error) {
-      console.error("Create user error:", error);
+      log("Create user error:", error);
       const apiError: ApiError = createErrorMessage(
         "CREATE_USER_ERROR",
         "Failed to create user",
@@ -56,7 +57,10 @@ export const UserController = {
     }
   },
 
-  async updateUserData(req: Request<{}, {}, UserUpdatePayload>, res: Response) {
+  updateUserData: async (
+    req: Request<Record<string, never>, unknown, UserUpdatePayload>,
+    res: Response
+  ) => {
     try {
       const uid = req.user?.uid;
       if (!uid) {
@@ -99,7 +103,7 @@ export const UserController = {
 
       res.json({ data: updatedUser, status: 200 });
     } catch (error) {
-      console.error("Update user error:", error);
+      log("Update user error:", error);
       const apiError: ApiError = createErrorMessage(
         "UPDATE_USER_ERROR",
         "Failed to update user data",
@@ -109,7 +113,7 @@ export const UserController = {
     }
   },
 
-  async fetchUserData(req: Request, res: Response) {
+  fetchUserData: async (req: Request, res: Response) => {
     try {
       const uid = req.user?.uid;
       if (!uid) {
@@ -131,7 +135,7 @@ export const UserController = {
 
       res.json({ data: user, status: 200 });
     } catch (error) {
-      console.error("Fetch user error:", error);
+      log("Fetch user error:", error);
       const apiError: ApiError = createErrorMessage(
         "FETCH_USER_ERROR",
         "Failed to fetch user data",

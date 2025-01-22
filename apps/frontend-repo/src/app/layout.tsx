@@ -1,12 +1,16 @@
-import { type ReactNode } from "react";
+import type { Metadata } from "next";
 import { Providers } from "./providers";
 
-export const metadata = {
-  title: "Frontend App",
-  description: "Frontend application with Firebase auth and MUI",
+export const metadata: Metadata = {
+  title: "monorepo-frontend",
+  description: "monorepo-frontend",
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}): JSX.Element {
   return (
     <html lang="en">
       <body>

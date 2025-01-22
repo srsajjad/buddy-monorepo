@@ -1,9 +1,9 @@
 import { Container, Box } from "@mui/material";
-import FetchDataButton from "../../components/FetchDataButton";
-import UpdateUserButton from "../../components/UpdateUserButton";
-import Navbar from "../../components/Navbar";
+import FetchDataButton from "@/components/FetchDataButton";
+import UpdateUserButton from "@/components/UpdateUserButton";
+import Navbar from "@/components/Navbar";
 
-export default function Dashboard() {
+export default function Page() {
   return (
     <>
       <Navbar />

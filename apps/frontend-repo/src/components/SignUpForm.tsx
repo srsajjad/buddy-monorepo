@@ -13,11 +13,12 @@ import {
   Link,
 } from "@mui/material";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "../config/firebase";
-import { userApi } from "../apis/userApi";
-import type { User } from "../types/user";
+import { log } from "@repo/logger";
+import { auth } from "@/config/firebase";
+import { userApi } from "@/apis/userApi";
+import type { User } from "@/types/user";
 
-export default function SignUpForm() {
+export default function SignUpForm(): JSX.Element {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,7 +26,7 @@ export default function SignUpForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -44,7 +45,7 @@ export default function SignUpForm() {
       // Save user data to our backend/Firestore
       const userData: Partial<User> = {
         uid: user.uid,
-        email: user.email!,
+        email: user.email || "",
         displayName,
         photoURL: user.photoURL || "",
         isActive: true,
@@ -54,10 +55,26 @@ export default function SignUpForm() {
       router.push("/dashboard");
     } catch (err) {
       setError("Failed to create account. Please try again.");
-      console.error("Signup error:", err);
+      log("Signup error:", err);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleDisplayNameChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setDisplayName(e.target.value);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setPassword(e.target.value);
   };
 
   return (
@@ -83,7 +100,12 @@ export default function SignUpForm() {
           <Typography component="h1" variant="h5">
             Sign Up
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{ mt: 1 }}
+            noValidate
+          >
             <TextField
               margin="normal"
               required
@@ -92,9 +114,8 @@ export default function SignUpForm() {
               label="Display Name"
               name="displayName"
               autoComplete="name"
-              autoFocus
               value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
+              onChange={handleDisplayNameChange}
             />
             <TextField
               margin="normal"
@@ -105,8 +126,8 @@ export default function SignUpForm() {
               name="email"
               autoComplete="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              error={!!error}
+              onChange={handleEmailChange}
+              error={Boolean(error)}
             />
             <TextField
               margin="normal"
@@ -118,14 +139,14 @@ export default function SignUpForm() {
               id="password"
               autoComplete="new-password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              error={!!error}
+              onChange={handlePasswordChange}
+              error={Boolean(error)}
             />
-            {error && (
+            {error ? (
               <Typography color="error" variant="body2" sx={{ mt: 1 }}>
                 {error}
               </Typography>
-            )}
+            ) : null}
             <Button
               type="submit"
               fullWidth

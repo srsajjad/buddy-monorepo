@@ -12,14 +12,14 @@ import {
 import type { AppDispatch, RootState } from "../store/store";
 import { fetchUserData } from "../store/slices/userSlice";
 
-export default function FetchDataButton() {
+export default function FetchDataButton(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   const { user, loading, error } = useSelector(
     (state: RootState) => state.user
   );
 
   const handleFetch = () => {
-    dispatch(fetchUserData());
+    void dispatch(fetchUserData());
   };
 
   return (
@@ -38,16 +38,18 @@ export default function FetchDataButton() {
                 </Typography>
               </Box>
             </Box>
-            {user.createdAt && (
+
+            {user.createdAt ? (
               <Typography variant="body2" color="textSecondary">
                 Account created: {new Date(user.createdAt).toLocaleDateString()}
               </Typography>
-            )}
-            {user.updatedAt && (
+            ) : null}
+
+            {user.updatedAt ? (
               <Typography variant="body2" color="textSecondary">
                 Last updated: {new Date(user.updatedAt).toLocaleDateString()}
               </Typography>
-            )}
+            ) : null}
           </CardContent>
         </Card>
       ) : (
@@ -56,11 +58,11 @@ export default function FetchDataButton() {
         </Button>
       )}
 
-      {error && (
+      {error ? (
         <Typography color="error" sx={{ mt: 2 }}>
           {error}
         </Typography>
-      )}
+      ) : null}
     </Box>
   );
 }

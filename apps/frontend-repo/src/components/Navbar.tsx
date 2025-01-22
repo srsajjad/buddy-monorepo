@@ -2,18 +2,19 @@
 
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
+import { log } from "@repo/logger";
+import { auth } from "@/config/firebase";
 
-export default function Navbar() {
+export default function Navbar(): JSX.Element {
   const router = useRouter();
 
-  const handleLogout = async () => {
+  const handleLogout = async (): Promise<void> => {
     try {
       await signOut(auth);
       router.push("/"); // Redirect to login page
     } catch (error) {
-      console.error("Logout error:", error);
+      log("Logout error:", error);
     }
   };
 

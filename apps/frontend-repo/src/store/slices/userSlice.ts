@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { userApi } from "../../apis/userApi";
 import type { User, UserUpdatePayload, ApiResponse } from "@repo/shared-types";
+import { userApi } from "@/apis/userApi";
 
 interface UserState {
   user: User | null;
@@ -18,7 +18,7 @@ const initialState: UserState = {
 
 export const fetchUserData = createAsyncThunk<
   ApiResponse<User>,
-  void,
+  undefined,
   { rejectValue: string }
 >("user/fetchUserData", async (_, { rejectWithValue }) => {
   try {

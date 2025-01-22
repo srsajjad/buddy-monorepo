@@ -1,11 +1,12 @@
 import { type Request, type Response, type NextFunction } from "express";
-import { auth } from "../config/firebase";
+import { log } from "@repo/logger";
+import { auth } from "@/config/firebase";
 
 export const authMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<Response | undefined> => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader?.startsWith("Bearer ")) {
@@ -23,7 +24,7 @@ export const authMiddleware = async (
 
     next();
   } catch (error) {
-    console.error("Auth error:", error);
-    res.status(401).json({ error: "Unauthorized" });
+    log("Auth error:", error);
+    return res.status(401).json({ error: "Unauthorized" });
   }
 };

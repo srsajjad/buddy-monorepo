@@ -1,20 +1,22 @@
 import type { User, UserUpdatePayload } from "@repo/shared-types";
 import { type Firestore } from "firebase-admin/firestore";
 import { formatDate, isValidUser } from "@repo/shared-utils";
-import { db } from "../config/firebase";
+import { db } from "@/config/firebase";
 
-class UserRepository {
+export class UserRepository {
   private collection: FirebaseFirestore.CollectionReference;
 
-  constructor(db: Firestore) {
-    this.collection = db.collection("users");
+  constructor(firestore: Firestore) {
+    this.collection = firestore.collection("users");
   }
 
-  async createUser(userData: { uid?: string } & Partial<User>): Promise<User> {
+  async createUser(
+    userData: { uid: string; email: string } & Partial<User>
+  ): Promise<User> {
     const now = formatDate(new Date());
     const user: User = {
-      uid: userData.uid!,
-      email: userData.email!,
+      uid: userData.uid,
+      email: userData.email,
       displayName: userData.displayName || "",
       photoURL: userData.photoURL || "",
       createdAt: now,
@@ -82,4 +84,3 @@ class UserRepository {
 }
 
 export const userCollection = new UserRepository(db);
-export { UserRepository };

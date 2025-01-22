@@ -13,16 +13,17 @@ import {
   Link,
 } from "@mui/material";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../config/firebase";
+import { log } from "@repo/logger";
+import { auth } from "@/config/firebase";
 
-export default function LoginForm() {
+export default function LoginForm(): JSX.Element {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -32,7 +33,7 @@ export default function LoginForm() {
       router.push("/dashboard");
     } catch (err) {
       setError("Failed to sign in. Please check your credentials.");
-      console.error("Login error:", err);
+      log("Login error:", err);
     } finally {
       setLoading(false);
     }
@@ -70,10 +71,9 @@ export default function LoginForm() {
               label="Email Address"
               name="email"
               autoComplete="email"
-              autoFocus
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              error={!!error}
+              error={Boolean(error)}
             />
             <TextField
               margin="normal"
@@ -86,13 +86,15 @@ export default function LoginForm() {
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              error={!!error}
+              error={Boolean(error)}
             />
-            {error && (
+
+            {error ? (
               <Typography color="error" variant="body2" sx={{ mt: 1 }}>
                 {error}
               </Typography>
-            )}
+            ) : null}
+
             <Button
               type="submit"
               fullWidth

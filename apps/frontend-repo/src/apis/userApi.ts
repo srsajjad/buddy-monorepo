@@ -1,7 +1,8 @@
 import axios from "axios";
+import type { AxiosError } from "axios";
 import type { User, UserUpdatePayload, ApiResponse } from "@repo/shared-types";
 import { validateEmail, validateDisplayName } from "@repo/shared-utils";
-import { auth } from "../config/firebase";
+import { auth } from "@/config/firebase";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api";
@@ -28,7 +29,7 @@ api.interceptors.request.use(async (config) => {
 // Add response interceptor to handle errors
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
+  (error: AxiosError) => {
     if (error.response?.status === 401) {
       // Handle unauthorized error
       throw new Error("User not authenticated");

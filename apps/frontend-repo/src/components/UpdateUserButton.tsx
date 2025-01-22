@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { Button, Box, Typography, TextField, Paper } from "@mui/material";
 import type { UserUpdatePayload } from "@repo/shared-types";
-import { updateUserData } from "../store/slices/userSlice";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { updateUserData } from "@/store/slices/userSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
-export default function UpdateUserButton(): JSX.Element {
+export default function UpdateUserButton(): JSX.Element | null {
   const dispatch = useAppDispatch();
   const { loading, error, user } = useAppSelector((state) => state.user);
   const [showForm, setShowForm] = useState(false);
@@ -20,7 +20,7 @@ export default function UpdateUserButton(): JSX.Element {
     setShowForm(false);
   };
 
-  if (!user) return <></>;
+  if (!user) return null;
 
   return (
     <Box sx={{ mt: 2, textAlign: "center" }}>
