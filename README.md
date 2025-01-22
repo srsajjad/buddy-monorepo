@@ -43,62 +43,29 @@ buddy-monorepo/
 
 1. Clone the repository:
 
-```bash
-git clone [repository-url]
-cd buddy-monorepo
-```
+   ```bash
+   git clone [repository-url]
+   cd buddy-monorepo
+   ```
 
 2. Install dependencies:
 
-```bash
-pnpm install
-```
+   ```bash
+   pnpm install
+   ```
 
 3. Set up environment variables:
 
-```bash
-# In apps/backend-repo/.env
-FIREBASE_DATABASE_URL=your-database-url
-# Add other Firebase config variables
+   For local development:
 
-# In apps/frontend-repo/.env
-NEXT_PUBLIC_API_URL=http://localhost:5001/api
-# Add other frontend config variables
-```
+   - backend-repo/.env
+   - frontend-repo/.env.local
 
 4. Start development servers:
-
-```bash
-# Start all services
-pnpm dev
-
-# Start individual services
-pnpm --filter backend-repo dev
-pnpm --filter frontend-repo dev
-```
-
-### Local Development with Firebase Emulator
-
-1. Install Firebase CLI:
-
-```bash
-npm install -g firebase-tools
-```
-
-2. Start Firebase emulators:
-
-```bash
-cd apps/backend-repo
-firebase emulators:start --only functions
-```
-
-## Available Scripts
-
-- `pnpm dev` - Start development servers
-- `pnpm build` - Build all packages and apps
-- `pnpm lint` - Run ESLint
-- `pnpm typecheck` - Run TypeScript type checking
-- `pnpm test` - Run tests
+   ```bash
+   # Start all services
+   pnpm dev
+   ```
 
 ## API Endpoints
 
