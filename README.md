@@ -100,7 +100,7 @@ All endpoints require Firebase authentication token.
   - TypeScript
   - Turborepo
 
-NB: During backend production deployment, use the command `turbo build` and target the `dist` folder.
+**NB:** During backend production deployment, select the repo (here - `apps/backend-repo`), use the command `turbo build` and target the `dist` folder.
 
 ## License
 
