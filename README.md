@@ -1,6 +1,6 @@
 # Buddy Monorepo
 
-A full-stack TypeScript monorepo using Next.js, Express, and Firebase.
+A full-stack TypeScript monorepo using Next.js, Express, and Firebase powered by [Turbo](https://turbo.build).
 
 ## Project Structure
 
@@ -99,6 +99,8 @@ All endpoints require Firebase authentication token.
   - ESLint
   - TypeScript
   - Turborepo
+
+NB: During backend production deployment, use the command `turbo build` and target the `dist` folder.
 
 ## License
 
